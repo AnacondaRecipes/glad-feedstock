@@ -1,7 +1,7 @@
 {% set version = "2.0.8" %}
 
 package:
-  name: glad2
+  name: glad2-split
   version: {{ version }}
 
 source:
@@ -13,10 +13,10 @@ build:
 
 outputs:
   - name: glad2
+    script: python -m pip install . --no-deps --no-build-isolation -vv
     build:
       entry_points:
         - glad = glad.__main__:main
-      script: python -m pip install . --no-deps --no-build-isolation -vv
     requirements:
       host:
         - pip
@@ -26,6 +26,13 @@ outputs:
       run:
         - python
         - jinja2 >=2.7,<4.0
+    test:
+      imports:
+        - glad
+      requires:
+        - pip
+      commands:
+        - pip check
 
   - name: glad2-cmake
     script: install_cmake.sh  # [unix]
