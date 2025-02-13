@@ -13,8 +13,8 @@ build:
 
 outputs:
   - name: glad2
-    script: python -m pip install . --no-deps --no-build-isolation -vv
     build:
+      script: python -m pip install . --no-deps --no-build-isolation -vv
       entry_points:
         - glad = glad.__main__:main
     requirements:
