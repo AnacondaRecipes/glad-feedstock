@@ -26,7 +26,7 @@ outputs:
         - setuptools
         - wheel
       run:
-        - python
+        - python >=3.9
         - jinja2 >=2.7,<4.0
     test:
       imports:
