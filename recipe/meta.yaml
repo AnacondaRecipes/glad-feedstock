@@ -1,7 +1,7 @@
 {% set version = "2.0.8" %}
 
 package:
-  name: glad2
+  name: glad2-split
   version: {{ version }}
 
 source:
@@ -15,51 +15,55 @@ outputs:
   - name: glad2
     build:
       noarch: python
-      skip: true  # [not linux64]
+      script: python -m pip install . --no-deps --no-build-isolation -vv
       entry_points:
         - glad = glad.__main__:main
-      script: python -m pip install . --no-deps -vv
-
     requirements:
       host:
         - pip
-        - python >=3.8
+        - python
+        - setuptools
+        - wheel
       run:
-        - python >=3.8
-        - jinja2
-
+        - python >=3.9
+        - jinja2 >=2.7,<4.0
     test:
       imports:
         - glad
+      requires:
+        - pip
       commands:
-        - glad --help
+        - pip check
 
   - name: glad2-cmake
+    script: install_cmake.sh   # [not win]
+    script: install_cmake.bat  # [win]
     build:
       skip: false
-
     requirements:
       # dummy build env to avoid EnvironmentLocationNotFound on win
-      build:   # [win]
+      build:     # [win]
         - cmake  # [win]
       run:
         - {{ pin_subpackage('glad2', exact=True) }}
-
-    script: install_cmake.sh  # [unix]
-    script: install_cmake.bat  # [win]
-
     test:
       files:
         - CMakeLists.txt
+      imports:
+        - glad
       requires:
         - cmake
         - ninja
+        - pip
       commands:
+        - pip check
+        - glad --help
         - cmake -G Ninja -B b
 
     about:
       home: https://github.com/Dav1dde/glad
       license: MIT
+      license_family: MIT
       license_file: LICENSE
       summary: CMake package for glad2.
       description: |
@@ -71,10 +75,15 @@ outputs:
         and link `glad_gl_core_mx_33` to target
 
 about:
-  home: https://github.com/Dav1dde/glad
+  home: https://glad.dav1d.de/
+  dev_url: https://github.com/Dav1dde/glad
+  doc_url: https://github.com/Dav1dde/glad/wiki
   license: MIT
+  license_family: MIT
   license_file: LICENSE
-  summary: GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specs.
+  summary: Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specs.
+  description: |
+    Multi-Language Vulkan/GL/GLES/EGL/GLX/WGL Loader-Generator based on the official specs.
 
 extra:
   recipe-maintainers:
