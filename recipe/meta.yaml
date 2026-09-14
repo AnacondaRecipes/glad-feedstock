@@ -13,6 +13,7 @@ build:
 
 outputs:
   - name: glad2
+    skip: true
     build:
       noarch: python
       script: python -m pip install . --no-deps --no-build-isolation -vv
