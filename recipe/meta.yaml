@@ -46,7 +46,7 @@ outputs:
       build:     # [win]
         - cmake  # [win]
       run:
-        - {{ pin_subpackage('glad2', exact=True) }}
+        - {{ pin_subpackage('glad2') }}
     test:
       files:
         - CMakeLists.txt
